@@ -28,8 +28,10 @@ class MainWindow(QtGui.QMainWindow):
         textEdit = QtGui.QTextEdit()
         self.setCentralWidget(textEdit)
 
+        # StatusBar
         self.statusBar()
 
+        # MenuBar
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu('&File')
         file_menu.addAction(exitAction)
@@ -37,14 +39,23 @@ class MainWindow(QtGui.QMainWindow):
         file_menu.addAction(addTechAction)
         file_menu = menu_bar.addMenu('&Help')
 
-
+        # ToolBar
         toolbar = self.addToolBar('Tools Exit')
         toolbar.addAction(exitAction)
-
 
         # main button
         #self.addButton = QtGui.QPushButton('button to add other widgets')
         #self.addButton.clicked.connect(self.addWidget)
+
+
+
+
+
+
+
+
+
+
 
         # scroll area widget contents - layout
         self.scrollLayout = QtGui.QFormLayout()
@@ -71,42 +82,50 @@ class MainWindow(QtGui.QMainWindow):
         # set central widget
         self.setCentralWidget(self.centralWidget)
 
-
-
-        """
-        QtGui.QToolTip.setFont(QtGui.QFont('SansSerif', 10))
-        btn = QtGui.QPushButton('Button', self)
-        btn.setToolTip('This is a <b>QPushButton</b> widget')"""
-
-
-
-
-
-        self.setGeometry(300, 300, 250, 150)
+        #self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('TechTreeWindow')
-        self.show()
+
 
     def addWidget(self):
         self.scrollLayout.addRow(AddButton())
 
-class AddButton(myButton.Button):
+    def dragEnterEvent(self, e):
+
+        e.accept()
+
+    def dropEvent(self, e):
+
+        position = e.pos()
+        self.button.move(position)
+
+        e.setDropAction(QtCore.Qt.MoveAction)
+        e.accept()
+
+
+
+class AddButton(QtGui.QWidget):
     def __init__( self, parent=None):
         super(AddButton, self).__init__(parent)
-        self.setText("I am in Test widget")
-        self.clicked.connect(self.deleteLater)
 
-    def __del__(self):
-        self.clicked.connect(self.deleteLater)
+        self.AddAButton = myButton.Button('I am a Button')
+        layout = QtGui.QHBoxLayout()
+        layout.addWidget(self.AddAButton)
+        self.setLayout(layout)
+        #self.AddAButton.clicked.connect(self.deleteLater)
+
+#    def __del__(self):
+#        self.clicked.connect(self.deleteLater)
 
 
 def main():
-
     app = QtGui.QApplication(sys.argv)
-    ex = MainWindow()
+    myWidget = MainWindow()
+    myWidget.show()
 
     newTech=class_tech.Tech(5)
     newTech.__setYear__(10)
 
+    app.exec_()
     sys.exit(app.exec_())
 
 

@@ -1,21 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-"""
-ZetCode PyQt4 tutorial
-
-In this program, we can press on a button
-with a left mouse click or drag and drop the
-button with  the right mouse click.
-
-author: Jan Bodnar
-website: zetcode.com
-last edited: October 2013
-"""
-
 import sys
 from PySide import QtCore, QtGui
-
 
 class Button(QtGui.QPushButton):
 
