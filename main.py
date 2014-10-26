@@ -6,6 +6,15 @@ from PySide import QtGui, QtCore
 import class_tech,myButton
 
 
+# Tutorials I used for this so far:
+#   For drag&drop
+#       http://zetcode.com/gui/pyqt4/dragdrop/
+#   for the dynamical creation of a button
+#       http://stackoverflow.com/questions/8651742/dynamically-adding-and-removing-widgets-in-pyqt
+#
+#
+
+
 class MainWindow(QtGui.QMainWindow):
 
     def __init__(self):
@@ -43,27 +52,11 @@ class MainWindow(QtGui.QMainWindow):
         toolbar = self.addToolBar('Tools Exit')
         toolbar.addAction(exitAction)
 
-        # main button
-        #self.addButton = QtGui.QPushButton('button to add other widgets')
-        #self.addButton.clicked.connect(self.addWidget)
-
-
-
-
-
-
-
-
-
-
-
         # scroll area widget contents - layout
         self.scrollLayout = QtGui.QFormLayout()
-
         # scroll area widget contents
         self.scrollWidget = QtGui.QWidget()
         self.scrollWidget.setLayout(self.scrollLayout)
-
         # scroll area
         self.scrollArea = QtGui.QScrollArea()
         self.scrollArea.setWidgetResizable(True)
@@ -82,12 +75,29 @@ class MainWindow(QtGui.QMainWindow):
         # set central widget
         self.setCentralWidget(self.centralWidget)
 
-        #self.setGeometry(300, 300, 250, 150)
+        self.setGeometry(600, 600, 250, 150)
         self.setWindowTitle('TechTreeWindow')
 
 
     def addWidget(self):
         self.scrollLayout.addRow(AddButton())
+
+
+
+
+
+class AddButton(QtGui.QWidget):
+    def __init__( self, parent=None):
+        super(AddButton, self).__init__(parent)
+
+        self.setAcceptDrops(True)
+
+        self.AddAButton = myButton.Button('I am a Button')
+
+        layout = QtGui.QHBoxLayout()
+        layout.addWidget(self.AddAButton)
+        self.setLayout(layout)
+        #self.AddAButton.clicked.connect(self.deleteLater)
 
     def dragEnterEvent(self, e):
 
@@ -96,25 +106,13 @@ class MainWindow(QtGui.QMainWindow):
     def dropEvent(self, e):
 
         position = e.pos()
-        self.button.move(position)
+        self.AddAButton.move(position)
 
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
 
-
-
-class AddButton(QtGui.QWidget):
-    def __init__( self, parent=None):
-        super(AddButton, self).__init__(parent)
-
-        self.AddAButton = myButton.Button('I am a Button')
-        layout = QtGui.QHBoxLayout()
-        layout.addWidget(self.AddAButton)
-        self.setLayout(layout)
-        #self.AddAButton.clicked.connect(self.deleteLater)
-
-#    def __del__(self):
-#        self.clicked.connect(self.deleteLater)
+    def __del__(self):
+        self.clicked.connect(self.deleteLater)
 
 
 def main():
