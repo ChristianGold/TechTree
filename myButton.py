@@ -26,4 +26,4 @@ class Button(QtGui.QPushButton):
         super(Button, self).mousePressEvent(e)
 
         if e.button() == QtCore.Qt.LeftButton:
-            print('press')
+            print('pressed')

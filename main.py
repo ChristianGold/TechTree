@@ -29,13 +29,10 @@ class MainWindow(QtGui.QMainWindow):
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(self.close)
 
-        addTechAction = QtGui.QAction('Add tech', self)
+        addTechAction = QtGui.QAction(QtGui.QIcon('btn_tech.png'), 'add tech', self)
         addTechAction.setShortcut('Ctrl+N')
-        addTechAction.setStatusTip('Add new technology')
+        addTechAction.setStatusTip('add new technology')
         addTechAction.triggered.connect(self.addWidget)
-
-        textEdit = QtGui.QTextEdit()
-        self.setCentralWidget(textEdit)
 
         # StatusBar
         self.statusBar()
@@ -49,42 +46,24 @@ class MainWindow(QtGui.QMainWindow):
         file_menu = menu_bar.addMenu('&Help')
 
         # ToolBar
-        toolbar = self.addToolBar('Tools Exit')
-        toolbar.addAction(exitAction)
+        self.toolbar = self.addToolBar('Tools')
+        self.toolbar.addAction(addTechAction)
+        self.toolbar.addAction(exitAction)
 
-        # scroll area widget contents - layout
-        self.scrollLayout = QtGui.QFormLayout()
-        # scroll area widget contents
-        self.scrollWidget = QtGui.QWidget()
-        self.scrollWidget.setLayout(self.scrollLayout)
-        # scroll area
-        self.scrollArea = QtGui.QScrollArea()
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setWidget(self.scrollWidget)
-
-        # main layout
-        self.mainLayout = QtGui.QVBoxLayout()
-
-        # add all main to the main vLayout
-        self.mainLayout.addWidget(self.scrollArea)
+        # Layout
+        self.mainLayout = QtGui.QGridLayout()
 
         # central widget
         self.centralWidget = QtGui.QWidget()
         self.centralWidget.setLayout(self.mainLayout)
-
-        # set central widget
         self.setCentralWidget(self.centralWidget)
 
         self.setGeometry(600, 600, 250, 150)
         self.setWindowTitle('TechTreeWindow')
 
-
+    # addWidget for a new button - create AddButton class
     def addWidget(self):
-        self.scrollLayout.addRow(AddButton())
-
-
-
-
+        self.mainLayout.addWidget(AddButton(), 0, 2)
 
 class AddButton(QtGui.QWidget):
     def __init__( self, parent=None):
@@ -92,12 +71,12 @@ class AddButton(QtGui.QWidget):
 
         self.setAcceptDrops(True)
 
-        self.AddAButton = myButton.Button('I am a Button')
+        self.AddAButton = myButton.Button('Button')
+        self.AddAButton.setFixedSize(50,25)
 
         layout = QtGui.QHBoxLayout()
         layout.addWidget(self.AddAButton)
         self.setLayout(layout)
-        #self.AddAButton.clicked.connect(self.deleteLater)
 
     def dragEnterEvent(self, e):
 
@@ -126,6 +105,23 @@ def main():
     app.exec_()
     sys.exit(app.exec_())
 
-
 if __name__ == '__main__':
     main()
+
+
+
+""" # scroll area widget contents - layout
+self.scrollLayout = QtGui.QFormLayout()
+# scroll area widget contents
+self.scrollWidget = QtGui.QWidget()
+self.scrollWidget.setLayout(self.scrollLayout)
+# scroll area
+self.scrollArea = QtGui.QScrollArea()
+self.scrollArea.setWidgetResizable(True)
+self.scrollArea.setWidget(self.scrollWidget)
+
+# main layout
+self.mainLayout = QtGui.QVBoxLayout()
+
+# add all main to the main vLayout
+self.mainLayout.addWidget(self.scrollArea)"""
