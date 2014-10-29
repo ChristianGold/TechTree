@@ -1,4 +1,4 @@
-__author__ = 'Christian'
+__author__ = 'Christian Gold'
 # -*- coding: utf-8 -*-
 
 import sys
@@ -7,13 +7,14 @@ import class_tech,myButton
 
 
 # Tutorials I used for this so far:
-#   For drag&drop
+#   for drag&drop
 #       http://zetcode.com/gui/pyqt4/dragdrop/
 #   for the dynamical creation of a button
 #       http://stackoverflow.com/questions/8651742/dynamically-adding-and-removing-widgets-in-pyqt
-#
+#       http://thecodeinn.blogspot.de/2013/09/dynamically-adding-objects-in-pyqt.html
 #
 
+count=1
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -23,6 +24,8 @@ class MainWindow(QtGui.QMainWindow):
         self.initUI()
 
     def initUI(self):
+
+        self.setAcceptDrops(True)
 
         exitAction = QtGui.QAction('Exit', self)
         exitAction.setShortcut('Ctrl+Q')
@@ -47,6 +50,7 @@ class MainWindow(QtGui.QMainWindow):
 
         # ToolBar
         self.toolbar = self.addToolBar('Tools')
+        self.toolbar.setIconSize(QtCore.QSize(64,64))
         self.toolbar.addAction(addTechAction)
         self.toolbar.addAction(exitAction)
 
@@ -58,25 +62,21 @@ class MainWindow(QtGui.QMainWindow):
         self.centralWidget.setLayout(self.mainLayout)
         self.setCentralWidget(self.centralWidget)
 
-        self.setGeometry(600, 600, 250, 150)
+        self.setFixedSize(640, 480)
         self.setWindowTitle('TechTreeWindow')
 
     # addWidget for a new button - create AddButton class
     def addWidget(self):
-        self.mainLayout.addWidget(AddButton(), 0, 2)
+        global count
 
-class AddButton(QtGui.QWidget):
-    def __init__( self, parent=None):
-        super(AddButton, self).__init__(parent)
+        self.b = myButton.Button(str(count),self)
+        self.b.clicked.connect(self.Button)
+        self.b.setFixedSize(40,40)
 
-        self.setAcceptDrops(True)
+        self.mainLayout.addWidget(self.b,count,0)
 
-        self.AddAButton = myButton.Button('Button')
-        self.AddAButton.setFixedSize(50,25)
+        count += 1
 
-        layout = QtGui.QHBoxLayout()
-        layout.addWidget(self.AddAButton)
-        self.setLayout(layout)
 
     def dragEnterEvent(self, e):
 
@@ -85,22 +85,25 @@ class AddButton(QtGui.QWidget):
     def dropEvent(self, e):
 
         position = e.pos()
-        self.AddAButton.move(position)
+        self.b.move(position)
 
         e.setDropAction(QtCore.Qt.MoveAction)
         e.accept()
 
-    def __del__(self):
-        self.clicked.connect(self.deleteLater)
+    def Button(self):
 
+        sender = self.sender()
+
+        print(sender.text())
 
 def main():
     app = QtGui.QApplication(sys.argv)
     myWidget = MainWindow()
     myWidget.show()
 
-    newTech=class_tech.Tech(5)
-    newTech.__setYear__(10)
+    #Techclass
+    #newTech=class_tech.Tech(5)
+    #newTech.__setYear__(10)
 
     app.exec_()
     sys.exit(app.exec_())

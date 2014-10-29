@@ -4,9 +4,8 @@ import sys
 from PySide import QtCore, QtGui
 
 class Button(QtGui.QPushButton):
-
-    def __init__(self, title):
-        super(Button, self).__init__(title)
+    def __init__(self, title, parent):
+        super(Button, self).__init__(title, parent)
 
     def mouseMoveEvent(self, e):
 
